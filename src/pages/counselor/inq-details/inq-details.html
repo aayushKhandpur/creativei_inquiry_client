@@ -1,0 +1,267 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{currentInq?"Inquiry - Edit":"Inquiry - New"}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <form [formGroup]="inqForm" (ngSubmit)="logForm()">
+    <ion-grid>
+      <ion-item-divider color="light">Personal Details
+        <span class="inq-status" *ngIf="currentInq">
+          Status:
+          <select #inqStatus (change)="changeInqStatus(inqStatus.value)">
+            <option [selected]=isInqOpen(currentInqStatus) value="open">Open</option>
+            <option [selected]=!isInqOpen(currentInqStatus) value="close">Closed</option>
+          </select>
+        </span>
+      </ion-item-divider>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Name</ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Mobile No.</ion-label>>
+            <ion-input type="number" formControlName="mobile" min="0"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label>Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Gender</ion-label>
+            <ion-select formControlName="gender">
+              <ion-option *ngFor="let gender of genders" [value]=gender>{{gender}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label>Date of Birth</ion-label>
+            <ion-datetime displayFormat="D MMM YYYY" pickerFormat="D MMM YYYY" min = "1900" [max] = "today" formControlName="dob"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Education</ion-label>
+            <ion-select formControlName="hQualification">
+              <ion-option *ngFor="let qualification of hQualifications" [value]=qualification>{{qualification}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label>Computer Knowledge</ion-label>
+            <ion-select formControlName="computerKnowledge">
+              <ion-option *ngFor="let knowledge of computerKnowledge" [value]=knowledge>{{knowledge}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label>Course Interested In</ion-label>
+            <ion-select formControlName="areaOfInterest">
+              <ion-option *ngFor="let areaOfInterest of areasOfInterest" [value]=areaOfInterest>{{areaOfInterest}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-item-divider color="light">Address</ion-item-divider>
+      <ion-row formGroupName="address">
+        <ion-col no-padding>
+          <ion-row>
+            <ion-col col-3 class="pin-autocomplete">
+              <ion-label>Pincode</ion-label>
+              <ng2-completer class="completer-limit" formControlName="pin" (focus)="setPincodeFieldTypeNumber()" (selected)="onPincodeSelected($event)" [datasource]="pinService" [minSearchLength]="3" [placeholder]="'Enter the first 3 digits to search'" [maxChars]="6" [clearUnselected]="true" [autoMatch]="true" [inputId]="'completer-input'"></ng2-completer>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="areas && inqForm.value.address.pin.length == 6">
+            <ion-col col-3>
+              <ion-item>
+                <ion-label floating>Area</ion-label>
+                <ion-select formControlName="locationId">
+                  <ion-option *ngFor="let area of areas" [value]=area.id>{{area.name | titlecase}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label floating>City</ion-label>
+                <ion-input type="text" readonly="true" value="{{city | titlecase}}, {{state | titlecase}}, {{country | titlecase}}"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="areas">
+            <ion-col>
+              <ion-item>
+                <ion-label>Street</ion-label>
+                <ion-input type="text" formControlName="addressLine1"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-item-divider color="light">Additional Education Details</ion-item-divider>
+      <div formArrayName="education" *ngFor="let item of inqForm.get('education').controls; let i = index;">
+        <div [formGroupName]="i">
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Qualification</ion-label>
+                <ion-select formControlName="educationQualification">
+                  <ion-option *ngFor="let qualification of hQualifications" [value]=qualification>{{qualification}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label>Stream</ion-label>
+                <ion-select formControlName="stream">
+                  <ion-option *ngFor="let stream of streams" [value]=stream>{{stream}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label>Year of Completion</ion-label>
+                <ion-input type="number" formControlName="year"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Institute</ion-label>
+                <ion-input type="text" formControlName="instituteName"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Education Status</ion-label>
+                <ion-select formControlName="status">
+                  <ion-option *ngFor="let status of eduStatus" [value]=status>{{status}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label>Education Type</ion-label>
+                <ion-select formControlName="type">
+                  <ion-option *ngFor="let type of eduType" [value]=type>{{type}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Marks</ion-label>
+                <ion-input type="number" formControlName="aggregateMarks"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label>Marking Scheme</ion-label>
+                <ion-select formControlName="markScheme">
+                  <ion-option *ngFor="let scheme of markScheme" [value]=scheme>{{scheme}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+      <ion-item-divider color="light">Guardian's Details</ion-item-divider>
+      <div formGroupName="guardian">
+        <ion-row>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label>Name</ion-label>
+              <ion-input type="text" formControlName="name"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Relation</ion-label>
+              <ion-select type="text" formControlName="relation">
+                <ion-option *ngFor="let relation of guardianRelation" [value]=relation>{{relation}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Occupation</ion-label>
+              <ion-select type="text" formControlName="occupation">
+                <ion-option *ngFor="let occupation of guardianOccupation" [value]=occupation>{{occupation}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Phone Number</ion-label>
+              <ion-input type="number" formControlName="phoneNumber"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Email</ion-label>
+              <ion-input type="email" formControlName="email"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+      <ion-item-divider color="light">How did you hear about us?</ion-item-divider>
+      <div formGroupName= "marketing">
+          <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-label>Source</ion-label>
+                  <ion-select formControlName="source">
+                    <ion-option *ngFor="let source of enqSource" [value]=source>{{source}}</ion-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col>
+                <ion-item>
+                  <ion-label>Referred</ion-label>
+                  <ion-toggle formControlName="referred"></ion-toggle>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf = "inqForm.controls.marketing.controls.referred.value">
+              <ion-col>
+                <ion-item>
+                  <ion-label>Referrer Name</ion-label>
+                  <ion-input type="text" formControlName="referant"></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+      </div>
+      <br>
+      <button ion-button full type="submit">Submit</button>
+    </ion-grid>
+  </form>
+</ion-content>

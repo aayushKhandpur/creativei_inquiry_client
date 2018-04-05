@@ -1,0 +1,25 @@
+<!-- <ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<ion-content padding>  
+  <section class="login">
+    <div class="login-button-group">
+      <button (click)="goToVisitorPage()" outline large ion-button color="light">VISITOR</button>
+      <div class="login-button-seperator">- OR -</div>
+      <button (click)="toggleLogin()" *ngIf="!isLogin" outline small ion-button color="light">LOGIN</button>
+      <form *ngIf="isLogin" [formGroup]="loginForm" (ngSubmit)="login()">
+        <label for='username'>Username</label>
+        <input formControlName="id" id='username' type='text'>
+        <label for='password'>Password</label>
+        <input formControlName="password" id='password' type='password'>
+        <button class="dash-login" type="submit" *ngIf="isLogin" outline small ion-button color="light">LOGIN</button>
+      </form>
+    </div>
+  </section>
+</ion-content>

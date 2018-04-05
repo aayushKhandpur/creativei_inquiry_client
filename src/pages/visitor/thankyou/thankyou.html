@@ -1,0 +1,38 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Thank You!</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <h2>
+        <b>Our counsellor will get in touch with you soon.</b>
+      </h2>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+    </ion-card-content>
+    <ion-row no-padding>
+      <ion-col text-center>
+        <button ion-button clear small color="primary" icon-start (click)="goToHome()">
+          <ion-icon name='home'></ion-icon>
+          Home
+        </button>
+      </ion-col>
+      <ion-col text-center>
+        <button ion-button clear small color="primary" icon-start (click)="newInquiry()">
+          <ion-icon name='md-create'></ion-icon>
+          New Inquiry
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

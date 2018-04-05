@@ -1,0 +1,94 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Summary</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <ion-item-divider>
+      <ion-row no-padding>
+        <ion-col col-2><h2><b>Inquiry #{{currentInq?.id}}</b></h2></ion-col>
+        <ion-col col-2><h2><b>Status: {{currentInq?.inquiryStatus}}</b></h2></ion-col>
+        <ion-col><h2><b>Course Interested In: {{currentInq?.areaOfInterest}}</b></h2></ion-col>
+        <ion-col><h2><b>Course Offered: {{currentInq?.courseOffered?currentInq?.courseOffered:"N/A"}}</b></h2></ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <ion-card-content>
+      <ion-row no-padding>
+        <ion-col>
+          <p>Name: {{currentInq?.name}}</p>
+          <p>Mobile No.: +91-{{currentInq?.mobile}}</p>
+          <P>Email: {{currentInq?.email}}</P>
+          <p>Gender: {{currentInq?.gender}}</p>
+          <p>DOB: {{currentInq?.dob | date: "dd/MM/yyyy"}}</p>
+        </ion-col>
+        <ion-col>
+          <p>Education: {{currentInq?.education[0]?.educationQualification?currentInq.education[0].educationQualification:"N/A"}}</p>
+          <p>Stream: {{currentInq?.education[0]?.stream?currentInq.education[0].stream:"N/A"}}</p>
+          <p>Year: {{currentInq?.education[0]?.year?currentInq.education[0].year:"N/A"}}</p>
+          <p>Computer Knowledge: {{currentInq?.computerKnowledge}}</p>
+          <p>Course Interested In: {{currentInq?.areaOfInterest}}</p>
+        </ion-col>
+        <ion-col>
+          <p>Guardian Name: {{currentInq?.guardian?.name?currentInq?.guardian.name:"N/A"}}</p>
+          <p>Relation: {{currentInq?.guardian?.relation?currentInq?.guardian.relation:"N/A"}}</p>
+          <p>Mobile No.: {{currentInq?.guardian?.phoneNumber?"+91-"+currentInq?.guardian.phoneNumber:"N/A"}}</p>
+          <p>Email: {{currentInq?.guardian?.email?currentInq?.guardian.email:"N/A"}}</p>
+          <p>Occupation: {{currentInq?.guardian?.occupation?currentInq?.guardian.occupation:"N/A"}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row no-padding>
+        <ion-col>
+          <p>Address: {{currentInq?.address.addressLine1 | titlecase}}{{currentInq?.address.addressLine1?",":""}} {{currentInq?.address.area | titlecase}}, {{currentInq?.address.city | titlecase}}, {{currentInq?.address.state | titlecase}}, {{currentInq?.address.country | titlecase}}, {{currentInq?.address.pin}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="currentInqReminders">
+    <ion-card-content>
+      <div class="reminder-container">
+        <h2><b>Reminders </b></h2>
+        <p *ngFor="let reminder of currentInqReminders; let i = index" (click)="showViewReminderModal(reminder)">{{i+1}}. {{reminder.title}}</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-item-divider>
+      <ion-row no-padding>
+        <ion-col class="follow-up-heading"><h2><b>Follow Ups</b></h2></ion-col>
+        <ion-col text-right>
+            <button (click)="addFollowUp()" ion-button clear small color="danger" icon-start>
+              <ion-icon name='add'></ion-icon>
+              Add Follow Up
+            </button>
+          </ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <ion-card-content *ngIf="!currentInqFollowUps"><br><h2 text-center>No follow ups available</h2></ion-card-content>
+    <ion-card-content *ngIf="currentInqFollowUps">
+      <ion-card *ngFor="let followUp of currentInqFollowUps; let i = index;">
+          <ion-item-divider color="light">
+            <ion-row no-padding>
+              <ion-col><h3 (click)="updateFollowUp(followUp)"><b>Follow Up #{{currentInqFollowUps.length-i}}</b></h3></ion-col>
+              <ion-col><h3><b>Done On: {{followUp?.followUpDate | date : "dd/MM/yyyy"}}</b></h3></ion-col>
+              <ion-col><h3><b>Course Offered: N/A</b></h3></ion-col>
+            </ion-row>
+          </ion-item-divider>
+          <ion-card-content>
+            <br>
+            <p><b>Status:</b>&nbsp;{{followUp?.followUpStatus}}</p>
+            <p><b>Sub Status:</b>&nbsp;{{followUp?.subStatus}}</p>
+            <p><b>Remark:</b>&nbsp;{{followUp?.remark}}</p>
+            <!-- <p><b>Next Follow Up On:</b>&nbsp;10/01/2018 @ 3 PM</p> -->
+          </ion-card-content>
+      </ion-card>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,85 @@
+page-inq-form-personal {
+
+    .changeState{
+        color: #a5a5a5;
+        cursor: pointer;
+    }
+    
+}
+
+// form{
+//     background-color: #fff;
+// }
+
+//Uncomment the following block for the application background image.
+// ion-content{
+//     background-image: url(../assets/imgs/bg-6.jpg);
+//     // background-repeat-y: no-repeat;
+//     background-position: bottom;
+// }
+
+.error-notification{
+    .toast-wrapper{
+        background-color: #f53d3d;
+    }
+}
+
+.info-notification{
+    .toast-wrapper{
+        background-color: #488aff;
+    }
+}
+
+.pin-autocomplete{
+    ion-label{
+        padding-left: 16px;
+        color: #999;
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+    .completer-holder{
+        // padding: 20px;
+        padding-left: 16px;
+    };
+    .completer-input{
+        padding: 10px;
+        padding-left: 2px;
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #ebebeb;
+    }
+    .completer-input:focus{
+        border-bottom: 1px solid #488aff !important;
+        box-shadow: inset 0 -1px 0 0 #488aff !important;
+    }
+
+    ng2-completer.ng-invalid.ng-touched{
+        .completer-input{
+            border-bottom: 1px solid #f53d3d;
+            box-shadow: inset 0 -1px 0 0 #f53d3d;
+        }
+    }
+    ng2-completer.ng-valid.ng-touched{
+        .completer-input{
+            border-bottom: 1px solid #32db64;
+            box-shadow: inset 0 -1px 0 0 #32db64;
+        }
+    }
+    .completer-limit .completer-dropdown {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 20rem;
+    }
+}
+
+.form-number{
+    color: #999;
+    padding-right: 12px;
+}
+
+.skip-button{
+    color: #999;
+}
+.skip-button:hover{
+    color: #488aff;
+}

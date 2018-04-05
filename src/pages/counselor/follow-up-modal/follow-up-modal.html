@@ -1,0 +1,58 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Follow Up</ion-title>
+    <ion-buttons end>
+      <button (click)="closeModal()" ion-button>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row>
+    <ion-col><h6>Inquiry#: {{inquiryId}}</h6></ion-col>
+    <ion-col><h6>Name: {{inquiryName}}</h6></ion-col>
+  </ion-row>
+  <form [formGroup]="followUpForm" (ngSubmit)="logForm()">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>Type</ion-label>
+          <ion-select formControlName="followUpType" interface="popover">
+            <ion-option *ngFor="let type of followUpType" [value]=type>{{type}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>Interest Level</ion-label>
+          <ion-select formControlName="caseIndex" interface="popover">
+            <ion-option *ngFor="let ci of caseIndex" [value]="ci.value">{{ci.value}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-item>
+      <ion-label stacked>Status</ion-label>
+      <ion-select formControlName="followUpStatus" interface="popover">
+        <ion-option *ngFor="let status of followUpStatus" [value]=status>{{status}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Substatus</ion-label>
+      <ion-select formControlName="subStatus" interface="popover">
+        <ion-option *ngFor="let subStatus of subStatus" [value]=subStatus>{{subStatus}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Remarks</ion-label>
+      <ion-textarea formControlName="remark" class="remark-textarea"></ion-textarea>
+    </ion-item>
+    <br>
+    <button ion-button full type="submit">Submit</button>
+  </form>
+</ion-content>

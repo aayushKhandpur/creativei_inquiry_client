@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Reminder</ion-title>
+    <ion-buttons end>
+      <button (click)="closeModal()" ion-button>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form *ngIf="canEdit" [formGroup]="reminderForm" (ngSubmit) = "logForm()">
+    <ion-item>
+      <ion-label stacked>Title</ion-label>
+      <ion-input formControlName="title" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Description</ion-label>
+      <ion-textarea formControlName="description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Time</ion-label>
+      <ion-input formControlName="time" type="datetime-local"></ion-input>
+    </ion-item>
+    <br>
+    <button ion-button full type="submit">Submit</button>
+  </form>
+
+  <div *ngIf="!canEdit">
+    <p><b>Title</b> {{currentReminder?.title}}</p>
+    <p><b>Description</b> {{currentReminder?.description}}</p>
+    <p><b>Date</b> {{currentReminder?.time | date:"dd/MM/yyyy @ hh:mm a"}}</p>
+    <br>
+    <br>
+    <a (click)="toggleEdit()">Edit</a>
+  </div>
+
+</ion-content>

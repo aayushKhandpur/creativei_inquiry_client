@@ -1,0 +1,156 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Inquiry List</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-toolbar class="filter-toolbar" color="light">
+    <ion-row>
+      <ion-col col-1 class="absolute-center-contents">
+        <ion-icon title="Filter" name="funnel"></ion-icon>
+      </ion-col>
+      <ion-col>
+        <ion-row>
+          <ion-col col-1>
+            <p>From:</p>
+          </ion-col>
+          <ion-col col-2 class="absolute-center-contents">
+            <input #fromDate type="date">
+          </ion-col>
+          <ion-col col-1>
+            <p>To:</p>
+          </ion-col>
+          <ion-col col-2 class="absolute-center-contents">
+            <input #toDate type="date">
+          </ion-col>
+          <ion-col col-1 class="absolute-center-contents">
+              <button (click)="filterInqByDate(fromDate.value,toDate.value)" ion-button clear small>Apply</button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+
+  <ion-card color="light">
+    <ion-row>
+      <ion-col col-1 class="absolute-center-contents">
+        <div class="header-title" (click)="toggleSort('id')">
+          ID
+          <span class="sort-icon" *ngIf="sortBy.id.bool">
+              <ion-icon [name] = "sortBy.id.ascending?'ios-arrow-down':'ios-arrow-up'" class="see-more"></ion-icon>
+          </span>
+        </div>
+      </ion-col>
+      <ion-col col-1 class="absolute-center-contents">
+        <div class="header-title" (click)="toggleSort('caseIndex')">
+          Case index
+          <span class="sort-icon" *ngIf="sortBy.caseIndex.bool">
+            <ion-icon [name] = "sortBy.caseIndex.ascending?'ios-arrow-down':'ios-arrow-up'" class="see-more"></ion-icon>
+          </span>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="header-title" (click)="toggleSort('name')">
+          Name
+          <span class="sort-icon" *ngIf="sortBy.name.bool">
+            <ion-icon [name] = "sortBy.name.ascending?'ios-arrow-down':'ios-arrow-up'" class="see-more"></ion-icon>
+          </span>
+        </div>
+      </ion-col>
+      <ion-col col-1 class="absolute-center-contents">
+        <div class="header-title" (click)="toggleSort('inquiryDate')">
+          Date
+          <span class="sort-icon" *ngIf="sortBy.inquiryDate.bool">
+            <ion-icon [name] = "sortBy.inquiryDate.ascending?'ios-arrow-down':'ios-arrow-up'" class="see-more"></ion-icon>
+          </span>
+        </div>
+      </ion-col>
+      <ion-col col-2 class="absolute-center-contents">
+        <div class="header-title" (click)="toggleSort('areaOfInterest')">
+          Course Interested In
+          <span class="sort-icon" *ngIf="sortBy.areaOfInterest.bool">
+            <ion-icon [name] = "sortBy.areaOfInterest.ascending?'ios-arrow-down':'ios-arrow-up'" class="see-more"></ion-icon>
+          </span>
+        </div>
+      </ion-col>
+      <ion-col col-2>
+        <div>
+          Follow Up Details
+        </div>
+      </ion-col>
+      <ion-col col-1></ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-card *ngFor = "let inq of (sortedInquiries?sortedInquiries:inquiries); let i = index;">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-1 class="absolute-center-contents">
+          <p>{{inq?.id}}.</p>
+        </ion-col>
+        <ion-col col-1 class="absolute-center-contents">
+          <div *ngIf = "inq.followUps[0]">
+            <div *ngIf = "inq.followUps[0].caseIndex == 'Likely'">
+              <ion-icon name="flash" class="case-index-3"></ion-icon>
+            </div>
+            <div *ngIf = "inq.followUps[0].caseIndex == 'Hot Lead'">
+              <ion-icon name="flash" class="case-index-4"></ion-icon>
+              <ion-icon name="flash" class="case-index-4"></ion-icon>
+            </div>
+          </div>
+        </ion-col>
+        <ion-col>
+          <p><b (click)="viewInq(inq.id)">{{inq?.name}}</b>&nbsp;&nbsp;&nbsp;<ion-icon color="primary" name='md-create' (click)="editInq(inq.id)"></ion-icon></p>
+          <p>{{inq?.mobile}} | {{inq?.email}}</p>
+        </ion-col>
+        <ion-col col-1 class="absolute-center-contents">
+          <p>{{inq?.inquiryDate | date: "dd/MM/yyyy"}}</p>
+        </ion-col>
+        <ion-col col-2 class="absolute-center-contents">
+          <p>{{inq?.areaOfInterest}}</p>
+        </ion-col>
+        <ion-col col-2 class="vertical-center-contents">
+          <p *ngIf = "inq.inquiryStatus == 'Open' && inq.followUps" title="Follow Up Status">{{inq?.followUps[0]?.followUpStatus}}</p>
+          <p *ngIf = "inq.inquiryStatus == 'Close'" title="Closing Status">{{inq?.closingStatus}}</p>
+        </ion-col>
+        <ion-col col-1 class="absolute-center-contents">
+            <button (click)="openFollowUpModal(inq.id,inq.name)" *ngIf="inq.inquiryStatus == 'Open'" ion-button icon-end clear small>
+              Follow Up
+              <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="inq.seeMore">
+        <ion-col col-1></ion-col>
+        <ion-col col-1></ion-col>
+        <ion-col>
+          <p>Guardian: <span *ngIf="inq.guardian">{{inq?.guardian?.name}}, {{inq?.guardian?.relation}}</span><span *ngIf="!inq.guardian">Not Available</span></p>
+          <p *ngIf="!inq.guardian">{{inq?.guardian?.phoneNumber}}</p>
+        </ion-col>
+        <ion-col col-1></ion-col>
+        <ion-col col-2></ion-col>
+        <ion-col col-2>
+          <p *ngIf = "inq.inquiryStatus == 'Open' && inq.followUps" title="Follow Up Sub-Status">{{inq?.followUps[0]?.subStatus}}</p>
+          <p *ngIf = "inq.inquiryStatus == 'Close'" title="Closing Sub-Status">{{inq?.closingSubStatus}}</p>
+          <p *ngIf = "inq.inquiryStatus == 'Open' && inq.followUps" title="Follow Up Remark">{{inq?.followUps[0]?.remark}}</p>
+          <p *ngIf = "inq.inquiryStatus == 'Close'" title="Closing Remark">{{inq?.closingRemark}}</p>
+        </ion-col>
+        <ion-col col-1></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col (click)="toggleSeeMore(i)" class="absolute-center-contents remove-padding">
+          <ion-icon *ngIf = "inq.seeMore" name="ios-arrow-up" class="see-more"></ion-icon>
+          <ion-icon *ngIf = "!inq.seeMore" name="ios-arrow-down" class="see-more"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+</ion-content>
