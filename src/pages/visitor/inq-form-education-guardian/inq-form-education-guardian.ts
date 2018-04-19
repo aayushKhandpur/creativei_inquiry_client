@@ -117,11 +117,12 @@ export class InqFormEducationGuardianPage {
       this.notify.showError(this.message.FORM.INVALID);
       console.log(this.inqForm);
       this.helper.markInvalidFields(this.inqForm);
-      this.helper.markInvalidSelect(this.inqForm.get('education').at(0), 'educationQualification');
-      this.helper.markInvalidSelect(this.inqForm.get('education').at(0), 'stream');
-      this.helper.markInvalidSelect(this.inqForm.get('education').at(0), 'status');
-      this.helper.markInvalidSelect(this.inqForm.get('education').at(0), 'type');
-      this.helper.markInvalidSelect(this.inqForm.get('education').at(0), 'markScheme');
+      let educationFormGroup: any = this.inqForm.get('education');
+      this.helper.markInvalidSelect(educationFormGroup.at(0), 'educationQualification');
+      this.helper.markInvalidSelect(educationFormGroup.at(0), 'stream');
+      this.helper.markInvalidSelect(educationFormGroup.at(0), 'status');
+      this.helper.markInvalidSelect(educationFormGroup.at(0), 'type');
+      this.helper.markInvalidSelect(educationFormGroup.at(0), 'markScheme');
       this.helper.markInvalidSelect(this.inqForm.get('guardian'), 'relation');
       this.helper.markInvalidSelect(this.inqForm.get('guardian'), 'occupation');
     }

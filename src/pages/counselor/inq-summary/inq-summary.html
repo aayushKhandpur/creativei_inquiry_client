@@ -55,7 +55,7 @@
     <ion-card-content>
       <div class="reminder-container">
         <h2><b>Reminders </b></h2>
-        <p *ngFor="let reminder of currentInqReminders; let i = index" (click)="showViewReminderModal(reminder)">{{i+1}}. {{reminder.title}}</p>
+        <p *ngFor="let reminder of currentInqReminders; let i = index" (click)="showViewReminderModal(reminder)"  pointer>{{i+1}}. {{reminder.title}}</p>
       </div>
     </ion-card-content>
   </ion-card>
@@ -76,7 +76,7 @@
       <ion-card *ngFor="let followUp of currentInqFollowUps; let i = index;">
           <ion-item-divider color="light">
             <ion-row no-padding>
-              <ion-col><h3 (click)="updateFollowUp(followUp)"><b>Follow Up #{{currentInqFollowUps.length-i}}</b></h3></ion-col>
+              <ion-col><h3 (click)="updateFollowUp(followUp)" pointer><b>Follow Up #{{currentInqFollowUps.length-i}}</b></h3></ion-col>
               <ion-col><h3><b>Done On: {{followUp?.followUpDate | date : "dd/MM/yyyy"}}</b></h3></ion-col>
               <ion-col><h3><b>Course Offered: N/A</b></h3></ion-col>
             </ion-row>
